@@ -2,7 +2,8 @@ import random
 
 while range(1):
 
-    lista = ["kamien", "papier", "nozyce"]
+    lista = ["kamien", "papier", "nozyce", "k", "p", "n"]
+    
     komputer = 0
     gracz = 0
     potyczka = 0
@@ -26,8 +27,8 @@ while range(1):
 
     print(" ")
     print("Tryby gry:")
-    print("a) Normalny - klasyczne papier, kamien nozyce (bez drugiej szansy)")
-    print("b) Bez konca - w normalnej rozgrywce grasz do trzech zwycięskich rund, tutaj w nieskończoność!")
+    print("a) Normalny - klasyczne papier, kamień, nożyce - do trzech zwycięskich rund")
+    print("b) Bez limitu - rozgrywka bez limitu!")
 
     print(" ")
 
@@ -35,34 +36,40 @@ while range(1):
         
         wybor = input("W jakim trybie chcesz zacząć grę? (N/B) ")
 
-        if wybor not in ["N", "B"]:
+        if wybor not in ["n", "b", "N", "B"]:
 
             print(" ")
             
-            print("Nie rozumiem, możesz wpisać ponownie?")
+            print("Taki tryb nie istnieje, wybrałeś poprawnie?")
 
             print(" ")
             
             continue
         
-        
+
         else:
             break
     print(" ")
 
-    if wybor == "N":
+    if wybor == "N" or "n":
 
         while True:
 
             potyczka += 1
-            
+        
+
             print("==========================")
             print("Bitwa numer:", potyczka, "| Normalny")
             print("==========================")
             
             print(" ")
             
-            x = input("Wybierz swoją broń: ")
+            x = input("""Wybierz swoją broń: 
+            - papier
+            - kamien
+            - nozyce
+
+            """)
             y = random.randint(0,2)
             z = lista[y]
 
@@ -73,56 +80,57 @@ while range(1):
 
                 potyczka += -1
                 
-                if x[0] == "k":
-                    if x != "koniec":
-                        print(">Bitwa odwołana. Miałeś na myśli kamien? (niezły wybór). Pozostałe rodzaje broni: papier, nozyce")
-                        print(" ")
-                                
-                if x[0] == "p":
-                    print(">Bitwa odwołana. Miałeś na myśli papier? (niezły wybór). Pozostałe rodzaje broni: kamien, nozyce")
-                    print(" ")
-                                    
-                if x[0] == "n":
-                    print(">Bitwa odwołana. Miałeś na myśli nozyce? (niezły wybór). Pozostałe rodzaje broni: papier, kamien")
-                    print(" ")
+                if x == "koniec":
+                    exit()
+                else:
+                    print("Taka broń nie istnieje! Jesteś pewien wyboru?")
+                    break
 
-                if x[0] != "k":
-                    if x[0] != "p":
-                        if x[0] != "n":
-                            print(">Bitwa odwołana. Niestety, nie wiem o jaką broń ci chodzi. Wybierz kamien, papier albo nozyce")
-                            print(" ")
 
-            if x == "koniec":
-                break
-                
             if x in lista:
-                print("komputer wybrał:", lista[y])
 
-                if z == "kamien":
-                    if x == "papier":
-                        gracz += 1
+                w = "blad"
+                if (x == "k" or "kamien"):
+                    w = "kamien"
 
-                if z == "kamien":
-                    if x == "nozyce":
-                        komputer += 1
+                if (x == "p" or "papier"):
+                    w = "papier"
 
-                if z == "papier":
-                    if x == "kamien":
-                        komputer += 1
+                if (x == "n" or "nozyce"):
+                    w = "nozyce"
+                
+                if w == "blad":
+                    print("Wystąpił błąd (zmienna w).")
 
-                if z == "papier":
-                    if x == "nozyce":
-                        gracz += 1
+                print(f"Komputer wybrał: {lista[y]}, Ty wybrałeś(-aś) {w}")
 
-                if z == "nozyce":
-                    if x == "kamien":
-                        gracz += 1
+                if (z == "kamien") and (w == "papier"):
+                    #print("Z - kamien + x - papier, gracz +1")
+                    gracz += 1
 
-                if z == "nozyce":
-                    if x == "papier":
-                        komputer += 1
-                        
-                if z == x:
+                if (z == "kamien") and (w == "nozyce"):
+                    #print("Z - kamien + x - nozyce, komp +1")
+                    komputer += 1
+
+                if (z == "papier") and (w == "kamien"):
+                    #print("Z - papier + x - kamien, komp +1")
+                    komputer += 1
+
+                if (z == "papier") and (w == "nozyce"):
+                    #print("Z - papier + x - nozyce, gracz +1")
+                    gracz += 1
+
+                if (z == "nozyce") and (w == "kamien"):
+                    #print("Z - nozyce + x - kamien, gracz +1")
+                    gracz += 1
+
+                if (z == "nozyce") and (w == "papier"):
+                    #print("Z - nozyce + x - papier, komp +1")
+                    komputer += 1
+                
+                #print(komputer, gracz)   
+
+                if z == w:
                     print(" ")
                     print("        >>REMIS<<")
                     
@@ -152,10 +160,7 @@ while range(1):
         print("---------------------------------|")
         print("Liczba punktów|  ", gracz, "  |    ", komputer, "   |")
         print("---------------------------------|")
-        if potyczka > 9:
-            print("Ilość Bitew   |       ", potyczka, "       |")
-        else:
-            print("Ilość Bitew   |       ", potyczka, "        |")
+        print("Ilość Bitew   |       ", potyczka, "       |")
         print("---------------------------------|")
         if gracz == 3:
             print("Zwycięzca     |      Gracz       |")    
@@ -168,14 +173,14 @@ while range(1):
         else:
             print("Przewaga      |       ", komputer-gracz, "        |")
         print("=================================|")
+        break
 
-            
-    if wybor == "B":
+    if wybor == "B" or "b":
 
         while True:
 
             potyczka += 1
-            
+
             print("==========================")
             print("Bitwa numer:", potyczka, "| Bez Konca")
             print("==========================")
@@ -193,53 +198,38 @@ while range(1):
 
                 potyczka += -1
                 
-                if x[0] == "k":
-                    if x != "koniec":
-                        print(">Bitwa odwołana. Miałeś na myśli kamien? (niezły wybór). Pozostałe rodzaje broni: papier, nozyce")
-                        print(" ")
-                                
-                if x[0] == "p":
-                    print(">Bitwa odwołana. Miałeś na myśli papier? (niezły wybór). Pozostałe rodzaje broni: kamien, nozyce")
-                    print(" ")
-                                    
-                if x[0] == "n":
-                    print(">Bitwa odwołana. Miałeś na myśli nozyce? (niezły wybór). Pozostałe rodzaje broni: papier, kamien")
-                    print(" ")
+                if x == "koniec":
+                    break
+                else:
+                    print("Taka broń nie istnieje! Jesteś pewien wyboru?")
+                    break
 
-                if x[0] != "k":
-                    if x[0] != "p":
-                        if x[0] != "n":
-                            print(">Bitwa odwołana. Niestety, nie wiem o jaką broń ci chodzi. Wybierz kamien, papier albo nozyce")
-                            print(" ")
 
-            if x == "koniec":
-                break
-                
             if x in lista:
                 print("komputer wybrał:", lista[y])
 
-                if z == "kamien":
-                    if x == "papier":
+                if z == "kamien" or "k":
+                    if x == "papier" or "p":
                         gracz += 1
 
-                if z == "kamien":
-                    if x == "nozyce":
+                if z == "kamien" or "k":
+                    if x == "nozyce" or "n":
                         komputer += 1
 
-                if z == "papier":
-                    if x == "kamien":
+                if z == "papier" or "p":
+                    if x == "kamien" or "k":
                         komputer += 1
 
-                if z == "papier":
-                    if x == "nozyce":
+                if z == "papier" or "p":
+                    if x == "nozyce" or "n":
                         gracz += 1
 
-                if z == "nozyce":
-                    if x == "kamien":
+                if z == "nozyce" or "p":
+                    if x == "kamien" or "k":
                         gracz += 1
 
-                if z == "nozyce":
-                    if x == "papier":
+                if z == "nozyce" or "n":
+                    if x == "papier" or "p":
                         komputer += 1
                         
                 if z == x:
@@ -252,21 +242,7 @@ while range(1):
                 print("     |-------------|")
                 print("     |  K   |  G   |")
                 print("     |-------------|")
-                if komputer > 9:
-                    if gracz < 10:
-                        print("     | ", komputer, " | ", gracz,"  |")
-
-                if gracz > 9:
-                    if komputer < 10:
-                        print("     | ", komputer, "  | ", gracz," |")
-
-                if komputer > 9:
-                    if gracz > 9:
-                        print("     | ", komputer, " | ", gracz," |")
-
-                else:
-                    print("     | ", komputer, "  | ", gracz,"  |")
-                    
+                print("     | ", komputer, "  | ", gracz,"  |") 
                 print("     |-------------|")
                 print(" ")
                 print(" ")
@@ -280,10 +256,7 @@ while range(1):
         print("---------------------------------|")
         print("Liczba punktów|  ", gracz, "  |    ", komputer, "   |")
         print("---------------------------------|")
-        if potyczka > 9:
-            print("Ilość Bitew   |       ", potyczka, "       |")
-        else:
-            print("Ilość Bitew   |       ", potyczka, "        |")
+        print("Ilość Bitew   |       ", potyczka, "       |")
         print("---------------------------------|")
         if gracz == 3:
             print("Zwycięzca     |      Gracz       |")    
@@ -292,7 +265,6 @@ while range(1):
         print("---------------------------------|")
         if gracz == 3:
             print("Przewaga      |       ", gracz-komputer, "        |")
-
         else:
             print("Przewaga      |       ", komputer-gracz, "        |")
         print("=================================|")    
