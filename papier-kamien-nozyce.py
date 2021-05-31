@@ -90,14 +90,14 @@ while range(1):
             if x in lista:
 
                 w = "blad"
+                if (x == "n" or "nozyce"):
+                    w = "nozyce"
+                
                 if (x == "k" or "kamien"):
                     w = "kamien"
 
                 if (x == "p" or "papier"):
                     w = "papier"
-
-                if (x == "n" or "nozyce"):
-                    w = "nozyce"
                 
                 if w == "blad":
                     print("Wystąpił błąd (zmienna w).")
